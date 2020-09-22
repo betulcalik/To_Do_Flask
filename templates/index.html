@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <title> To Do App </title>
+</head>
+<body class="bg-dark">
+
+    <div class="container">
+        <h3 class="text-center text-muted"> To Do List </h3>
+        <hr>
+
+        <form action="/add" method="POST">
+            <div class="form-group">
+                <label for="formToDo" class="text-muted"> To Do </label>
+                <input type="text" name="title" class="form-control" id="formToDo" placeholder="What's your plan?">
+              </div>
+              <div class="form-group">
+                <label for="formContent" class="text-muted"> Content </label>
+                <textarea name="content" class="form-control" id="formContent" rows="3" placeholder="Enter your content"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-outline-secondary"> Add </button>
+        </form>
+        <hr>
+
+        {% if todos == [] %}
+          <div class="alert alert-warning">
+            You dont have any to-do.
+          </div>
+        {% else %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="text-muted"> ID </th>
+                <th scope="col" class="text-muted"> Title </th>
+                <th scope="col" class="text-muted"> Content </th>
+                <th scope="col" class="text-muted"> Status </th>
+                <th scope="col" class="text-muted"> Update </th>
+                <th scope="col" class="text-muted"> Delete </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for todo in todos %}
+              <tr>
+                <th scope="row"> {{todo.id}}</th>
+                <td class="text-muted">{{todo.title}}</td>
+                <td class="text-muted">{{todo.content}}</td>
+                {% if todo.complete == False %}
+                <td class="text-muted"> Not completed </td>
+                {% else %}
+                <td class="text-muted"> Completed </td>
+                {% endif %}
+                <td><a href="/update/{{todo.id}}" class="btn btn-danger"> Update </a></td>
+                <td><a href="/delete/{{todo.id}}" class="btn btn-danger"> Delete </a></td>
+              </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+    </div>
+    
+    
+</body>
+</html>
